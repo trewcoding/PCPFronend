@@ -1,0 +1,17 @@
+.CenterContainerSize {
+    max-width: 500px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.MuiCard-root {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.padding {
+    margin-bottom: 20px;
+}
+
+.MuiCardHeader-title {
+    text-align: center;
+    font-size: xx-large;
+}
