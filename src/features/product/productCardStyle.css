@@ -7,6 +7,15 @@
     margin-left: 10px;
     margin-right: 10px;
 }
+
+.tabMarginBottom {
+    margin-bottom: 10px;
+}
+
+.noTabMargin {
+    margin-top: 58px;
+}
+
 .padding {
     margin-bottom: 20px;
 }
@@ -14,4 +23,12 @@
 .MuiCardHeader-title {
     text-align: center;
     font-size: xx-large;
+}
+
+.titleCase {
+    text-transform: capitalize;
+}
+
+.noProducts {
+    margin: 10px;
 }

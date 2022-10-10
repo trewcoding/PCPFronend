@@ -9,14 +9,15 @@ export default class ProductStore {
     //selectedProduct: Data | undefined = undefined
     loading = false;
     loadingInitial = true;
+    brandListTemp = new Array<string>();
 
     constructor() {
         makeAutoObservable(this)
     }
-    
+
 
     get productsArray() {
-        return Array.from(this.productRegistry.values()) 
+        return Array.from(this.productRegistry.values())
     }
 
     get groupedProducts() {
@@ -25,17 +26,30 @@ export default class ProductStore {
                 const brand = product.brand;
                 products[brand] = products[brand] ? [...products[brand], product] : [product];
                 return products;
-            }, {} as {[key: string]: Products[]} )
+            }, {} as { [key: string]: Products[] })
         )
+    }
+
+    get brandsList() {
+        return new Set<string>(
+            Object.values(this.productsArray.reduce((brandNames, brandName) => {
+                const brand = brandName.brand;
+                brandNames = this.brandListTemp.push(brand)
+                //this.brandList.add(brand);
+                return this.brandListTemp
+            }, {})
+            )
+        )
+
     }
 
     get groupedCategories() {
         return Object.entries(
-            this.productsArray.reduce((products, product) => {
+            this.productsArray.sort().reduce((products, product) => {
                 const productCategory = product.productCategory;
                 products[productCategory] = products[productCategory] ? [...products[productCategory], product] : [product];
                 return products;
-            }, {} as {[key: string]: Products[]} )
+            }, {} as { [key: string]: Products[] })
         )
     }
 

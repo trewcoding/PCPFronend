@@ -8,21 +8,23 @@ interface Props {
 }
 
 export default function Eligibilitys({ eligibility }: Props) {
-    var arrayRetured: Array<string> = [];
-    eligibility.forEach(function (eligibility) {
-        arrayRetured.push(eligibility.eligibilityType)
-    })
-    let setReturned = [...new Set(arrayRetured)]
+    const grouped = Object.entries(
+        eligibility.reduce((values, value) => {
+            const key = value.eligibilityType;
+            values[key] = values[key] ? [...values[key], value] : [value];
+            return values;
+        }, {} as { [key: string]: Eligibility[] })
+    )
 
     return (
         <>
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>Product Eligibility</Typography>
+                    <Typography variant="h5">Product Eligibility</Typography>
                 </AccordionSummary>
-                {setReturned.sort().map(group => (
+                {grouped.sort().map(([group, eligibility], i) => (
                     <AccordionDetails key={group}>
-                        <Typography>{group.replaceAll('_', " ")}</Typography>
+                        <Typography className="titleCase"><b>{group}</b></Typography>
                         {eligibility?.map(eligibility => (
                             <Box key={eligibility.eligibilityId}>
                                 {eligibility.eligibilityType === group && eligibility.additionalInfo &&
@@ -31,7 +33,8 @@ export default function Eligibilitys({ eligibility }: Props) {
                                     <p className="marginBottom">Value: {eligibility.additionalValue}</p>}
                             </Box>
                         ))}
-
+                        {grouped.length - 1 !== i &&
+                        <Divider /> }
                     </AccordionDetails>
                 ))}
             </Accordion>

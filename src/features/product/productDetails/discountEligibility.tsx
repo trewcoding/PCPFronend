@@ -7,25 +7,24 @@ interface Props {
 }
 
 export default function DiscountEligibility({ eligibility }: Props) {
-    var arrayRetured: Array<string> = [];
-    eligibility.forEach(function (eligibility) {
-        arrayRetured.push(eligibility.discountEligibilityType)
-    })
-    let setReturned = [...new Set(arrayRetured)]
-
-    console.log(eligibility)
+    const grouped = Object.entries(
+        eligibility.reduce((values, value) => {
+            const key = value.discountEligibilityType;
+            values[key] = values[key] ? [...values[key], value] : [value];
+            return values;
+        }, {} as { [key: string]: Eligibility[] })
+    )
 
     return (
         <>
             <Box>
-                <Typography>Product Eligibility</Typography>
-                {setReturned.sort().map(group => (
+                {grouped.sort().map(([group, eligibility]) => (
                     <Box key={group}>
-                        <Typography>{group.replaceAll('_', " ")}</Typography>
+                        <Typography className="titleCase"><u>Discount Eligibility: {group}</u></Typography>
                         {eligibility?.map(eligibility => (
                             <Box key={eligibility.eligibilityId}>
                                 {eligibility.discountEligibilityType === group && eligibility.additionalInfo &&
-                                    <p>{eligibility.additionalInfo}</p>}
+                                    <p>Eligibility: {eligibility.additionalInfo}</p>}
                                 {eligibility.discountEligibilityType === group && eligibility.additionalValue &&
                                     <p className="marginBottom">Value: {eligibility.additionalValue}</p>}
                             </Box>

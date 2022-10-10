@@ -5,3 +5,11 @@
 p {
     margin:1px
 }
+
+.AccordianMarginTop {
+    margin-top: 10px;
+}
+
+.titleCase {
+    text-transform: capitalize;
+}

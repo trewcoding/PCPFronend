@@ -1,12 +1,17 @@
+import { Avatar, Container } from "@mui/material";
+import { Toolbar } from "@mui/material";
 import { AppBar, ThemeProvider } from "@mui/material";
-import useStyles from "./styles";
+import "./styles.css";
 import { theme } from "./theme";
 
 export default function NavBar() {
-    const classes = useStyles();
     return (
-            <AppBar position="static" color='primary' className={classes.appBarSize}>
-                Hello
+            <AppBar position="fixed" color='primary'>
+                <Container disableGutters={true} maxWidth={false}>
+                    <Toolbar disableGutters={true}>
+                        <Avatar variant="square" src="./brands/CBA.png" className="imageSizing"/>
+                    </Toolbar>
+                </Container>
             </AppBar>
     )
 }

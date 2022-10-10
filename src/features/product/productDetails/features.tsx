@@ -8,32 +8,35 @@ interface Props {
 }
 
 export default function Features({ features }: Props) {
-    var arrayRetured: Array<string> = [];
-    features.forEach(function (feature) {
-        arrayRetured.push(feature.featureType)
-    })
-    let setReturned = [...new Set(arrayRetured)]
+    const grouped = Object.entries(
+        features.reduce((values, value) => {
+            const key = value.featureType;
+            values[key] = values[key] ? [...values[key], value] : [value];
+            return values;
+        }, {} as { [key: string]: Feature[] })
+    )
 
     return (
         <>
-            <Accordion key={"feature"}>
+            <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>Product Features</Typography>
+                    <Typography variant="h5">Product Features</Typography>
                 </AccordionSummary>
-                {setReturned.sort().map(group => (
+                {grouped.sort().map(([group, features], i) => (
                     <AccordionDetails key={group}>
-                        <Typography>{group.replaceAll('_', " ")}</Typography>
+                        <Typography className="titleCase"><b>{group}</b></Typography>
                         {features?.map(feature => (
-                            <Box key={feature.featureId}>
+                            <Box key={feature.featureId} className="marginBottom">
                                 {feature.featureType === group && feature.additionalInfo &&
-                                    <p key={feature.featureId+"1"}>{feature.additionalInfo}</p>}
+                                    <p>{feature.additionalInfo}</p>}
                                 {feature.featureType === group && feature.additionalValue &&
-                                    <p key={feature.featureId+"2"}>Value: {feature.additionalValue}</p>}
+                                    <p>Value: {feature.additionalValue}</p>}
                                 {feature.featureType === group && feature.additionalInfoUri &&
-                                    <p key={feature.featureId+"3"} className="marginBottom"><a href={feature.additionalInfoUri}>Additional Information</a></p>}
+                                    <p><a href={feature.additionalInfoUri}>Additional Information</a></p>}
                             </Box>
                         ))}
-                        <Divider />
+                        {grouped.length - 1 !== i &&
+                        <Divider /> }
                     </AccordionDetails>
                 ))}
             </Accordion>

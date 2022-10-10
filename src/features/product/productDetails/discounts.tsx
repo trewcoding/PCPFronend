@@ -8,32 +8,34 @@ interface Props {
 }
 
 export default function Discounts({ discounts }: Props) {
-    var arrayRetured: Array<string> = [];
-    discounts.forEach(function (discount) {
-        arrayRetured.push(discount.discountType)
-    })
-    let setReturned = [...new Set(arrayRetured)]
 
-        return (
-            <>
+    const grouped = Object.entries(
+            discounts.reduce((values, value) => {
+                const key = value.discountType;
+                values[key] = values[key] ? [...values[key], value] : [value];
+                return values;
+            }, {} as { [key: string]: Discount[] })
+        )
+
+    return (
+        <>
             <Box>
-                <h1>Product Discounts</h1>
-                {setReturned.sort().map(group => (
+                {grouped.sort().map(([group, discounts]) => (
                     <Box key={group}>
-                        <Typography>{group.replaceAll('_', " ")}</Typography>
+                        <Typography className="titleCase"><u>Discount: {group}</u></Typography>
                         {discounts?.map(discount => (
-                            <Box key={discount.discountId}>
+                            <Box key={discount.discountId} className="marginBottom">
                                 {discount.discountType === group && discount.description &&
                                     <p>{discount.description}</p>}
                                 {discount.discountType === group && discount.amount &&
-                                    <p className="marginBottom">Discount Value: {discount.amount}</p>}
+                                    <p>Discount Value: {discount.amount}</p>}
                                 {discount.eligibility?.length !== 0 && discount.discountType === group &&
-                                     <DiscountEligibility eligibility={discount.eligibility} />}
+                                    <DiscountEligibility eligibility={discount.eligibility} />}
                             </Box>
                         ))}
                     </Box>
                 ))}
             </Box>
-            </>
-        )
+        </>
+    )
 }

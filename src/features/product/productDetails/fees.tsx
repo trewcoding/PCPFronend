@@ -9,25 +9,28 @@ interface Props {
 }
 
 export default function Fees({ fees }: Props) {
-    var arrayRetured: Array<string> = [];
-    fees.forEach(function (fee) {
-        arrayRetured.push(fee.feeType)
-    })
-    let setReturned = [...new Set(arrayRetured)]
+    const grouped = Object.entries(
+        fees.reduce((values, value) => {
+            const key = value.feeType;
+            values[key] = values[key] ? [...values[key], value] : [value];
+            return values;
+        }, {} as { [key: string]: Fee[] })
+    )
+    console.log(grouped)
 
     return (
         <>
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>Product Fees</Typography>
+                    <Typography variant="h5">Product Fees</Typography>
                 </AccordionSummary>
-                {setReturned.sort().map(group => (
+                {grouped.sort().map(([group, fees], i) => (
                     <AccordionDetails key={group}>
-                        <Typography>{group.replaceAll('_', " ")}</Typography>
+                        <Typography className="titleCase marginBottom"><b>{group}</b></Typography>
                         {fees?.map(fee => (
-                            <Box key={fee.feeId}>
+                            <Box key={fee.feeId} className="marginBottom">
                                 {fee.feeType === group && fee.name &&
-                                    <h3>{fee.name}</h3>}
+                                    <b>{fee.name}</b>}
                                 {fee.feeType === group && fee.additionalInfo &&
                                     <p>{fee.additionalInfo}</p>}
                                 {fee.feeType === group && fee.amount &&
@@ -37,10 +40,11 @@ export default function Fees({ fees }: Props) {
                                 {fee.feeType === group && fee.discounts?.length !== 0 &&
                                     <Discounts discounts={fee.discounts} />}
                                 {fee.feeType === group && fee.additionalValue &&
-                                    <p className="marginBottom">Value: {fee.additionalValue}</p>}
+                                    <p>Value: {fee.additionalValue}</p>}
                             </Box>
                         ))}
-                        <Divider />
+                        {grouped.length - 1 !== i &&
+                        <Divider /> }
                     </AccordionDetails>
                 ))}
             </Accordion>

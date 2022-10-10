@@ -8,32 +8,35 @@ interface Props {
 }
 
 export default function LendingRates({ lendingRates }: Props) {
-    var arrayRetured: Array<string> = [];
-    lendingRates.forEach(function (lendingRate) {
-        arrayRetured.push(lendingRate.lendingRateType)
-    })
-    let setReturned = [...new Set(arrayRetured)]
+    const grouped = Object.entries(
+        lendingRates.reduce((values, value) => {
+            const key = value.lendingRateType;
+            values[key] = values[key] ? [...values[key], value] : [value];
+            return values;
+        }, {} as { [key: string]: LendingRate[] })
+    )
 
     return (
         <>
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>Product Lending Rates</Typography>
+                    <Typography variant="h5">Product Lending Rates</Typography>
                 </AccordionSummary>
-                {setReturned.sort().map(group => (
+                {grouped.sort().map(([group, lendingRates], i) => (
                     <AccordionDetails key={group}>
-                        <Typography>{group.replaceAll('_', " ")}</Typography>
+                        <Typography className="titleCase">{group}</Typography>
                         {lendingRates?.map(lendingRate => (
                             <Box key={lendingRate.lendingRatesId}>
                                 {lendingRate.lendingRateType === group && lendingRate.rate &&
-                                    <h3>Lending Rate: {lendingRate.rate}</h3>}
+                                    <p>Lending Rate: {lendingRate.rate}</p>}
                                 {lendingRate.lendingRateType === group && lendingRate.calculationFrequency &&
                                     <p>Calculation Frequency: {lendingRate.calculationFrequency}</p>}
                                 {lendingRate.lendingRateType === group && lendingRate.additionalInfo &&
                                     <p className="marginBottom">{lendingRate.additionalInfo}</p>}
                             </Box>
                         ))}
-                        <Divider />
+                        {grouped.length - 1 !== i &&
+                        <Divider /> }
                     </AccordionDetails>
                 ))}
             </Accordion>

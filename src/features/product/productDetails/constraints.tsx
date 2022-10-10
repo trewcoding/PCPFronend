@@ -8,30 +8,34 @@ interface Props {
 }
 
 export default function Constraints({ constraints }: Props) {
-    var arrayRetured: Array<string> = [];
-    constraints.forEach(function (constraints) {
-        arrayRetured.push(constraints.constraintType)
-    })
-    let setReturned = [...new Set(arrayRetured)]
+
+    const grouped = Object.entries(
+        constraints.reduce((values, value) => {
+                const key = value.constraintType;
+                values[key] = values[key] ? [...values[key], value] : [value];
+                return values;
+            }, {} as { [key: string]: Constraint[] })
+        )
 
     return (
         <>
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>Product Constraints</Typography>
+                    <Typography variant='h5'>Product Constraints</Typography>
                 </AccordionSummary>
-                {setReturned.sort().map(group => (
+                {grouped.map(([group, constraints], i) => (
                     <AccordionDetails key={group}>
-                        <Typography>{group.replaceAll('_', " ")}</Typography>
+                        <Typography className="titleCase"><b>{group}</b></Typography>
                         {constraints?.map(constraint => (
-                            <Box key={constraint.constraintId}>
+                            <Typography key={constraint.constraintId}>
                                 {constraint.constraintType === group && constraint.additionalInfo &&
                                     <p>{constraint.additionalInfo}</p>}
                                 {constraint.constraintType === group && constraint.additionalValue &&
                                     <p className="marginBottom">Value: {constraint.additionalValue}</p>}
-                            </Box>
+                            </Typography>
                         ))}
-                        <Divider />
+                        {grouped.length - 1 !== i &&
+                        <Divider /> }
                     </AccordionDetails>
                 ))}
             </Accordion>

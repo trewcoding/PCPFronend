@@ -31,7 +31,6 @@ export default function ProductAccordians({ selectedProduct }: Props) {
         }
         getProductDetails();
     }, [selectedProduct]);
-    console.log(productDetails)
 
     return (
         <>
