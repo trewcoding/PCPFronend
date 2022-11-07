@@ -25,17 +25,17 @@ export default function Constraints({ constraints }: Props) {
                 </AccordionSummary>
                 {grouped.map(([group, constraints], i) => (
                     <AccordionDetails key={group}>
-                        <Typography className="titleCase"><b>{group}</b></Typography>
+                        <Typography className="titleCase">{group}</Typography>
                         {constraints?.map(constraint => (
-                            <Typography key={constraint.constraintId}>
+                            <Box key={constraint.constraintId}>
                                 {constraint.constraintType === group && constraint.additionalInfo &&
                                     <p>{constraint.additionalInfo}</p>}
                                 {constraint.constraintType === group && constraint.additionalValue &&
                                     <p className="marginBottom">Value: {constraint.additionalValue}</p>}
-                            </Typography>
+                            </Box>
                         ))}
                         {grouped.length - 1 !== i &&
-                        <Divider /> }
+                        <Divider key={"Divider"+group} /> }
                     </AccordionDetails>
                 ))}
             </Accordion>

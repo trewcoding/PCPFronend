@@ -1,10 +1,9 @@
 import { Container, StyledEngineProvider, ThemeProvider } from "@mui/material";
-import ProductPage from "../../features/product/productPage";
+import ProductCategorySelection from "../../features/product/productCategorySelection";
 import NavBar from "./NavBar";
 import "./styles.css";
 
 import { theme } from "./theme";
-
 
 function App() {
   return (
@@ -13,14 +12,12 @@ function App() {
         <StyledEngineProvider injectFirst>
           <NavBar />
           <Container maxWidth={false} className="containerSize">
-            <ProductPage />
+            <ProductCategorySelection />
           </Container>
         </StyledEngineProvider>
       </ThemeProvider>
     </>
-
   );
 }
 
 export default App;
-

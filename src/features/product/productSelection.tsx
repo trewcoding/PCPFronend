@@ -2,10 +2,7 @@ import { CardContent, FormControl, InputLabel, MenuItem, Select, SelectChangeEve
 import { useEffect, useState } from "react";
 import './productCardStyle.css'
 import { Products } from "../../app/models/products";
-import { Data } from "../../app/models/data";
-import agent from "../../app/api/agent";
 import "./productCardStyle.css"
-import { observer } from "mobx-react-lite";
 import ProductAccordians from "./productAccordians";
 
 interface Props {

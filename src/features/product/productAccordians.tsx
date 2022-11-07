@@ -24,7 +24,6 @@ export default function ProductAccordians({ selectedProduct }: Props) {
             try {
                 const response = await agent.ProductInformation.getProductDetails(selectedProduct);
                 setProductDetails(response);
-                
             } catch (error) {
                 console.log(error)
             }

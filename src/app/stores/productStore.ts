@@ -1,5 +1,5 @@
 import agent from "../api/agent";
-import { makeAutoObservable, runInAction } from "mobx"
+import { makeAutoObservable } from "mobx"
 import { Products } from "../models/products";
 import { Data } from "../models/data";
 
@@ -14,7 +14,6 @@ export default class ProductStore {
     constructor() {
         makeAutoObservable(this)
     }
-
 
     get productsArray() {
         return Array.from(this.productRegistry.values())
@@ -35,7 +34,6 @@ export default class ProductStore {
             Object.values(this.productsArray.reduce((brandNames, brandName) => {
                 const brand = brandName.brand;
                 brandNames = this.brandListTemp.push(brand)
-                //this.brandList.add(brand);
                 return this.brandListTemp
             }, {})
             )

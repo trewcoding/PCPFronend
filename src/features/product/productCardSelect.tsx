@@ -11,7 +11,7 @@ interface Props {
 }
 
 
-export default observer(function ProductCard({ productCategorySelected, defaultBank }: Props) {
+export default observer(function ProductCardSelect({ productCategorySelected, defaultBank }: Props) {
     const { productStore } = useStore();
     const { groupedProducts, brandsList } = productStore;
     const [value, setValue] = useState(defaultBank);
@@ -38,8 +38,8 @@ export default observer(function ProductCard({ productCategorySelected, defaultB
             >
                 {brandsArray.sort().map(brand => {
                     if (brand !== "CBA") {
-                        return <Tab label={brand} value={brand} />
-                    }
+                        return <Tab label={brand} value={brand} key={brand} />
+                    } 
                 })}
 
             </Tabs>
@@ -47,11 +47,11 @@ export default observer(function ProductCard({ productCategorySelected, defaultB
             {groupedProducts.sort().map(([bank, products]) => {
                     if (bank === value) {
                     return <Card key={bank}>
-                        <CardHeader title={bank} className="cardHeaderPosition" />
+                        {/* <CardHeader title={bank} className="cardHeaderPosition" /> */}
                         <CardMedia
                             component='img'
                             src={`./brands/${bank}.png`}
-                            height="300px"
+                            height="200px"
                             sx={{ objectFit: "contain" }}
                         />
                         <ProductSelection productCategorySelected={productCategorySelected} products={products} />
